@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+	<title>2016742039 정정현</title>
+    <style>
+        /* Dropdown 버튼 */
+        .btn {
+            background-color: #393e46;
+            color: #eeeeee;
+            padding: 16px;
+            font-size: 20px;
+            font-weight: bold;
+            font-family: helvetica;
+            border: 2px solid black;
+            outline: none;
+        }
+
+        /* 드롭 다운된 요소들이 어디 위치할지 지정 */
+        .dropdown {
+            position: absolute;
+            display: inline-block;
+        }
+
+        /* 드롭 다운 요소 */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #eeeeee;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        /* 드롭 다운 내부 버튼들 */
+        .dropdown-content a {
+            color: #eeeeee;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        /* 마우스 올렸을 때 상호작용 */
+        .dropdown-content a:hover {background-color: #222831}
+
+        /* 마우스 올렸을 때 드롭다운 버튼 출력 */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .btn:hover, .dropdown:hover .btn  {
+            background-color: #222831;
+        }
+        /*버튼 속성*/
+        .button {
+            background-color: #393e46;
+            font-family: helvetica;
+            border: 1px solid white;
+            color: #eeeeee;
+            text-align: center;
+            text-decoration:none;
+            font-weight: bold;
+            display: inline-block;
+            width: 160px;
+            height: 30px;
+            font-size: 20px;
+            cursor: pointer;
+          }
+    </style>
+</head>
+
+<body>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' type='text/javascript'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.4.6/fabric.min.js" type="text/javascript"></script>
+    <script src="resources/math.js" type="text/javascript"></script>
+    <script src="resources/plotly-latest.min.js" type="text/javascript"></script>
+    <h1 style="width: 1500px; height: 35px; text-align:center; font-family: helvetica;background-color:#222831;color:#eeeeee;">Block Calculator</h1>
+    <!--함수 버튼 정의-->
+    <div style="align-items: center;width:1500px;height: 60px;background-color: white" >
+        <div class="dropdown" style="left: 10px;">
+            <button class="btn" style="width: 150px;height:60px">
+                삼각함수
+            </button>
+            <div class="dropdown-content">
+                <button class="button" onclick="functionbtnOnclick('sin')">sin</button>
+                <button class="button" onclick="functionbtnOnclick('cos')">cos</button>
+                <button class="button" onclick="functionbtnOnclick('tan')">tan</button>
+                <button class="button" onclick="functionbtnOnclick('csc')">csc</button>
+                <button class="button" onclick="functionbtnOnclick('sec')">sec</button>
+                <button class="button" onclick="functionbtnOnclick('cot')">cot</button>
+            </div>
+        </div>
+        <div class="dropdown" style="left: 170px;">
+            <button class="btn" style="width:150px;height:60px">
+                지수함수
+            </button>
+            <div class="dropdown-content">
+                <button class="button" onclick="functionbtnOnclick('e^')">e^x</button>
+                <button class="button" onclick="functionbtnOnclick('exp')">exp</button>
+                <button class="button" onclick="functionbtnOnclick('^')">^</button>
+            </div>
+        </div>
+        <div class="dropdown" style="left: 330px;">
+            <button class="btn" style="width:150px;height:60px">
+                로그함수
+            </button>
+            <div class="dropdown-content">
+                <button class="button" onclick="functionbtnOnclick('log')">log</button>
+                <button class="button" onclick="functionbtnOnclick('log2(')">log2</button>
+                <button class="button" onclick="functionbtnOnclick('log10(')">log10</button>
+            </div>
+        </div>
+        <div class="dropdown" style="left: 490px;">
+            <button class="btn" style="width:150px;height:60px">
+                행렬,벡터
+            </button>
+            <div class="dropdown-content">
+                <button class="button" onclick="functionbtnOnclick('cross')">cross</button>
+                <button class="button" onclick="functionbtnOnclick('det')">determinant</button>
+                <button class="button" onclick="functionbtnOnclick('dot')">dot product</button>
+                <button class="button" onclick="functionbtnOnclick('inv')">inverse</button>
+            </div>
+        </div>
+        <div class="dropdown" style="left: 650px;">
+            <button class="btn" style="width:150px;height:60px">
+                복소수
+            </button>
+            <div class="dropdown-content">
+                <button class="button" onclick="functionbtnOnclick('arg(')">argument</button>
+                <button class="button" onclick="functionbtnOnclick('conj(')">conjugate</button>
+                <button class="button" onclick="functionbtnOnclick('im(')">IM</button>
+                <button class="button" onclick="functionbtnOnclick('re(')">RE</button>
+            </div>
+        </div>
+        <div class="dropdown" style="left: 810px;">
+            <button class="btn" style="width:150px;height:60px">
+                상수
+            </button>
+            <div class="dropdown-content">
+                <button class="button" onclick="functionbtnOnclick('pi')">pi</button>
+                <button class="button" onclick="functionbtnOnclick('e')">e</button>
+                <button class="button" onclick="functionbtnOnclick('i')">i</button>
+            </div>
+        </div>
+        <div class="dropdown" style="left: 970px;">
+            <button class="btn" style="width:150px;height:60px">
+                ETC
+            </button>
+            <div class="dropdown-content">
+                <button class="button" onclick="functionbtnOnclick('sqrt(')">sqrt</button>
+                <button class="button" onclick="functionbtnOnclick('abs(')">|x|</button>
+                <button class="button" onclick="functionbtnOnclick('factorial(')">factorial</button>
+                <button class="button" onclick="functionbtnOnclick('f(x)=')">f(x)</button>
+                <button class="button" onclick="functionbtnOnclick('g(x)=')">g(x)</button>
+            </div>
+        </div>
+    </div>
+    <!--키보드 기능 설명-->
+    <div style="position:absolute; left: 200px;height: 60px;top: 50px; left: 1130px;">
+        <p style="border: 1px solid black;">
+            <strong>keyborad control</strong><br/>
+            <strong>Enter</strong>:execute <strong>Alt</strong>:copy <strong>Tab</strong>:disassameble
+            <br/> <strong>Backspace</strong>:destroy <strong>Delete</strong>:destroy All
+        </p>
+    </div>
+    <!--그래프 그리는 버튼& div-->
+    <button class="button" style="width:150px;height:60px; position: absolute; top: 230px; left:1620px" onclick="draw()">draw f(x)'s Graph</button>
+    <div id="plot" style="border: 1px solid black; width:300px; height:300px; position:absolute; top: 300px;left: 1550px;"></div>
+    
+    <canvas id="c" width="1500" height="700">
+        Canvas not supported
+    </canvas>
+
+    <script>
+        const parser = math.parser();
+        const SYMBOL_WIDTH = 50;
+        const SYMBOL_HEIGHT = 50;
+        //pop-up menu
+        const POPUP_WIDTH = 30;
+        const POPUP_HEIGHT = 30;
+
+        let MathApp = {};
+        var fxValue = 0;
+        var nowXY={x:50,y:50};//클릭한 후 마우스 좌표
+        var lastXY = {x:0,y:0};//이전에 클릭한 마우스 좌표
+        MathApp.symbol_paths = {
+                '+':    "add",
+                '-':    "sub",
+                '*':    "mul",
+                '/':    "div",
+                '(':    "parenthesis_open",
+                ')':    "parenthesis_close",
+                '[':    "squarebracket_open",
+                ']':    "squarebracket_close",
+                '{':    "curlybrace_open",
+                '}':    "curlybrace_close",
+                '.':    "period",
+                ',':    "comma",
+                ':':    "colon",
+                ';':    "semicolon",
+                '=':    "equal",
+                '>':    "more",
+                '<':    "less",
+                '!':    "exclamation",
+                '^':    "exp"
+        };
+
+        MathApp.blocks = [];
+        MathApp.selected_block = null;//현재 선택 block
+
+        MathApp.is_mouse_dragging = false;       
+        MathApp.mouse_drag_prev = {x:0, y:0};
+
+        MathApp.block_types = {
+            UNDEFINED:      "undefind",
+            SYMBOL:         "symbol",
+            POPUP_BUTTON:   "popupButton",
+            FUNCTION_BUTTON:"functionButton",
+        };
+
+        MathApp.initialize = function() {
+            for(let i=0; i <= 9; i++)
+            {
+                let key = i.toString();
+                let value = key;
+                this.symbol_paths[key] = value;
+            }
+
+            for(let c="a".charCodeAt(0); c <= "z".charCodeAt(0); c++)
+            {
+                let key = String.fromCharCode(c);
+                let value = key;
+                this.symbol_paths[key] = value;
+            }
+
+            this.canvas = new fabric.Canvas("c", {
+                backgroundColor: "#eee",
+                hoverCursor: "default",
+                selection: false
+            });
+
+            //
+            $(document).keypress(function(event) {
+                let key = String.fromCharCode(event.which);
+                MathApp.handleKeyPress(key);
+            });
+            $(document).mousedown(function(event) {
+                let p = {x: event.pageX, y: event.pageY};
+                MathApp.handleMouseDown(p);
+            });
+            $(document).mouseup(function(event) {
+                let p = {x: event.pageX, y: event.pageY};
+                MathApp.handleMouseUp(p);
+            });
+            $(document).mousemove(function(event) {
+                let p = {x: event.pageX, y: event.pageY};
+                MathApp.handleMouseMove(p);
+            });
+            $(document).keydown(function(event){
+                let key = event.key;
+                MathApp.keyControl(key);
+            });
+        }
+
+        
+        
+        MathApp.handleKeyPress = function(key) {
+            if(MathApp.selected_block != null){
+                MathApp.selected_block.onDeselected();
+                MathApp.selected_block = null;
+            }
+            if (key in this.symbol_paths) 
+            {
+                let size = {
+                    width : SYMBOL_WIDTH,
+                    height : SYMBOL_HEIGHT
+                };
+                let position
+                if(nowXY!=lastXY){
+                    position = {
+                        x : nowXY.x,//클릭한 마우스 위치에 블럭 생성
+                        y : nowXY.y
+                    };
+                    lastXY = nowXY;
+                }
+                else{
+                    position = {
+                        x : nowXY.x+=60,//생성된 블럭 왼쪽에 블럭 생성
+                        y : nowXY.y
+                    };
+                }
+                let new_symbol = new MathApp.Symbol(position, size, key);
+            }
+        }
+        MathApp.keyControl = function(key){
+            let lastBlock = MathApp.selected_block;
+            if(MathApp.selected_block != null){
+                MathApp.selected_block.onDeselected();
+                MathApp.selected_block = null;
+            }
+            if(key=='Enter'){
+                let result;
+                try{
+                    let temp
+                    temp = lastBlock.name.substring(5,lastBlock.name.length);
+                    result = parser.evaluate(lastBlock.name).toString();
+                    let subBlock;
+                    let tokens = result.substring(0,8);
+                    if (tokens == 'function') {
+                        result = tokens;
+                        fxValue = temp;
+                    }
+                    let position={
+                        x:lastBlock.position.x,
+                        y:lastBlock.position.y+60,
+                    }
+                    let size={
+                        width:SYMBOL_WIDTH,
+                        height:SYMBOL_HEIGHT,
+                    }
+                    this.makeSeveralSymbols(result, position);
+                }
+                catch(e){
+                    alert('Error : '+e.message);
+                }
+            }
+            else if(key=='Backspace'){
+                lastBlock.destroy();
+            }
+            else if(key=='Tab'){
+                for(let i=0;i<lastBlock.name.length;i++){
+                    let position={
+                        x:lastBlock.position.x+70*i,
+                        y:lastBlock.position.y+50
+                    }
+                    this.makeOneSymbol(lastBlock.name[i],position);
+                }
+                lastBlock.destroy();
+            }
+            else if(key=='Alt'){
+                let position={
+                    x:lastBlock.position.x,
+                    y:lastBlock.position.y+70,
+                }
+                this.makeSeveralSymbols(lastBlock.name,position);
+            }
+            else if(key=='Delete'){
+                let lengthV = MathApp.blocks.length;
+                for(let i=0;i<lengthV;i++){
+                    MathApp.blocks[0].destroy();
+                }
+            }
+        }
+        
+        MathApp.handleMouseDown = function(window_p) {
+            if(MathApp.isInCanvas(window_p))
+            {
+                let canvas_p = MathApp.transformToCanvasCoords(window_p);
+                //클릭했을때 좌표 저장
+                nowXY.x = canvas_p.x;
+                nowXY.y = canvas_p.y;
+                
+                let block = MathApp.findBlockOn(canvas_p);
+                let lastBlock = MathApp.selected_block;
+                if( MathApp.selected_block != null )
+                {
+                    MathApp.selected_block.onDeselected();
+                    MathApp.selected_block = null;
+                }
+
+                if(block != null)
+                {
+                    let result
+                    if(block.type == 'popupButton'){
+                        if(block.label == 'execute'){
+                            try{
+                                let temp
+                                temp = lastBlock.name.substring(5,lastBlock.name.length);
+                                result = parser.evaluate(lastBlock.name).toString();
+                                let subBlock;
+                                let tokens = result.substring(0,8);
+                                if (tokens == 'function') {
+                                    result = tokens;
+                                    fxValue = temp;
+                                }
+                                let position={
+                                    x:lastBlock.position.x,
+                                    y:lastBlock.position.y+60,
+                                }
+                                let size={
+                                    width:SYMBOL_WIDTH,
+                                    height:SYMBOL_HEIGHT,
+                                }
+                                this.makeSeveralSymbols(result, position);
+                            }
+                            catch(e){
+                                alert('Error : '+e.message);
+                            }
+                        }
+                        else if(block.label == 'disassemble'){
+                            for(let i=0;i<lastBlock.name.length;i++){
+                                let position={
+                                    x:lastBlock.position.x+70*i,
+                                    y:lastBlock.position.y+50
+                                }
+                                this.makeOneSymbol(lastBlock.name[i],position);
+                            }
+                            lastBlock.destroy();
+                        }
+                        else if(block.label == 'duplicate'){
+                            let position={
+                                x:lastBlock.position.x,
+                                y:lastBlock.position.y+70,
+                            }
+                            this.makeSeveralSymbols(lastBlock.name,position);
+                        }
+                        else if(block.label=='destroy'){
+                            lastBlock.destroy();
+                        }
+                    }
+                    else{
+                        
+                        MathApp.selected_block = block;
+                        MathApp.selected_block.onSelected();
+                        block.visual_items.forEach(item => {
+                            MathApp.canvas.bringToFront(item);
+                        });
+                    }
+                }
+                
+                MathApp.is_mouse_dragging = true;
+                MathApp.mouse_drag_prev = canvas_p;
+
+                MathApp.canvas.requestRenderAll();
+            }
+            else
+            {
+                MathApp.is_mouse_dragging = false;
+                MathApp.mouse_drag_prev = {x:0, y:0};
+            }
+            
+        }
+
+        MathApp.handleMouseMove = function(window_p) {
+            if(MathApp.is_mouse_dragging)
+            {
+                let canvas_p = MathApp.transformToCanvasCoords(window_p);
+                if(MathApp.selected_block != null)
+                {
+                    let tx = canvas_p.x - MathApp.mouse_drag_prev.x;
+                    let ty = canvas_p.y - MathApp.mouse_drag_prev.y;
+                    MathApp.selected_block.translate({x: tx, y: ty});
+
+                    let popupButtonTemp = [];
+
+                    for (let i = MathApp.blocks.length - 1; i >= MathApp.blocks.length - 4; i--)
+                        popupButtonTemp.push(MathApp.blocks[i]);
+
+                    popupButtonTemp.forEach(item => {
+                        item.translate({ x: tx, y: ty });
+                    });
+                }
+                
+                MathApp.mouse_drag_prev = canvas_p;
+
+                MathApp.canvas.requestRenderAll();
+            }
+        }
+
+        MathApp.handleMouseUp = function(window_p) {
+            if(MathApp.is_mouse_dragging)
+            {
+                let canvas_p = MathApp.transformToCanvasCoords(window_p);
+                //block assemble
+                //is_intersect 함수로 경계 사각형간 중첩 검사
+                MathApp.is_intersect();
+                
+                if (MathApp.is_mouse_dragging) {
+                    MathApp.is_mouse_dragging = false;
+                    MathApp.mouse_drag_prev = { x: 0, y: 0 };
+                }
+                MathApp.canvas.requestRenderAll();
+            }
+        }
+        //canvas 좌표로 변환
+        MathApp.transformToCanvasCoords = function(window_p) {
+            let rect = MathApp.canvas.getElement().getBoundingClientRect();
+            let canvas_p = {
+                x : window_p.x - rect.left,
+                y : window_p.y - rect.top
+            };
+            return canvas_p;
+        }
+        
+
+        MathApp.isInCanvas = function(window_p) {
+            let rect = MathApp.canvas.getElement().getBoundingClientRect();
+            if( window_p.x >= rect.left && 
+                window_p.x < rect.left + rect.width &&
+                window_p.y >= rect.top && 
+                window_p.y < rect.top + rect.height )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        MathApp.findBlockOn = function(canvas_p) {//Mouse 다운할때 블록 존재 유무 확인용
+            let x = canvas_p.x;
+            let y = canvas_p.y;
+            for (let i = 0; i < this.blocks.length; i++) {
+                let block = this.blocks[i];
+                if(block.type=='symbol'){
+                    if (//경계 조건 변경
+                    x >= block.position.x - 25 &&
+                    x <= block.position.x + (25 * (2 * block.visual_items.length / 3) - 5) &&
+                    y >= block.position.y - block.size.height / 2 &&
+                    y <= block.position.y + block.size.height / 2) {
+                        return block;
+                    }
+                }
+                else if(block.type=='popupButton'){
+                    if (//경계 조건 변경
+                    x >= block.position.x - 15 &&
+                    x <= block.position.x + (15 * (2 * block.visual_items.length / 3 ) - 5) &&
+                    y >= block.position.y - block.size.height / 2 &&
+                    y <= block.position.y + block.size.height / 2) {
+                        return block;
+                    }
+                }
+            }
+            return null;
+        }
+
+        MathApp.assemble = function (mainBlockIndex){
+            if(MathApp.selected_block != null){
+                let selected_block = MathApp.selected_block;
+                let mainBlock = this.blocks[mainBlockIndex];
+
+                let position= {
+                    x: mainBlock.position.x + mainBlock.size.width,
+                    y: mainBlock.position.y,
+                };
+                selected_block.moveTo(position);
+                selected_block.visual_items.forEach(item => {
+                    mainBlock.visual_items.push(item);
+                });
+    
+                mainBlock.name += selected_block.name;
+                mainBlock.size.width += selected_block.size.width;
+                
+                // 골랐던 block destroy
+                selected_block.destroy();
+    
+                mainBlock.visual_items.forEach(item => {
+                    MathApp.canvas.bringToFront(item);
+                });
+                MathApp.selected_block = null;
+                console.log("너비 : "+mainBlock.size.width);
+            }
+        }
+
+        MathApp.is_intersect = function() {
+            if(MathApp.selected_block != null){
+                let selected_block = MathApp.selected_block;
+
+                for(let i=0;i<this.blocks.length;i++){
+                    let check_block = this.blocks[i];
+                    let axisX = Math.abs(selected_block.position.x - check_block.position.x);
+                    let axisY = Math.abs(selected_block.position.y - check_block.position.y);
+                    if(axisX==0&&axisY==0)//원래 블럭의 경우
+                        continue;
+                    else if(axisX<=(check_block.size.width+5)&&axisY<=(check_block.size.height+5)){//두개의 축이 겹치는 경우
+                        MathApp.canvas.requestRenderAll();
+                        MathApp.assemble(i);
+                    }
+                }
+            }
+        }
+
+        MathApp.makeOneSymbol = function (name, position) {
+            let size = {
+                width: SYMBOL_WIDTH,
+                height: SYMBOL_HEIGHT
+            };
+            let new_symbol = new MathApp.Symbol(position, size, name);
+        }
+
+        MathApp.makeSeveralSymbols = function (name, position) {
+            for (let i = 0; i < name.length; i++) {
+                let newPosition = {
+                    x: position.x + SYMBOL_WIDTH * i,
+                    y: position.y,
+                }
+                this.makeOneSymbol(name[i], newPosition);
+            }
+            //setTimeout() => 일정 시간 후에 특정 함수를 의도적으로 지연한 뒤 실행할때 사용
+            // callback 함수로 visual_item 로딩 시간 대기
+            setTimeout(function () {
+                //assemble code
+                for (let i = 0; i < name.length - 1; i++) {
+                    let mainBlock = MathApp.blocks[MathApp.blocks.length - 2];//한칸 앞 블럭
+                    let subBlock = MathApp.blocks[MathApp.blocks.length - 1];//맨 뒤 블럭
+        
+                    subBlock.visual_items.forEach(item => {
+                        mainBlock.visual_items.push(item);
+                    });
+        
+                    mainBlock.name += subBlock.name;
+                    mainBlock.size.width += subBlock.size.width;
+                    subBlock.destroy();
+        
+                    mainBlock.visual_items.forEach(item => {
+                        MathApp.canvas.bringToFront(item);
+                    });
+                }
+            }, 100)
+        }
+
+        MathApp.Block = function(position, size) {
+            this.position = position;
+            this.size = size;
+            this.type = MathApp.block_types.UNDEFINED;
+
+            this.visual_items = [];
+
+            MathApp.blocks.push(this);
+        }
+
+        MathApp.Block.prototype.onDeselected = function() {
+            if (this.visual_items.length <2) {//block 1개
+                this.visual_items[this.visual_items.length - 1].set({
+                    stroke: "#222831"
+                });
+            }
+            else {//block 2개 이상
+                for (let i = this.visual_items.length - 1; i >= 0; i--)
+                    this.visual_items[i].set({
+                        stroke: "#222831"
+                    });
+            }
+            let lengthV = MathApp.blocks.length
+            for (let i = lengthV - 1; i >= lengthV - 4; i--)
+                MathApp.blocks[i].destroy();
+        }
+
+        MathApp.Block.prototype.onSelected = function() {
+            if(this.visual_items.length<2){//block 1개
+                this.visual_items[this.visual_items.length-1].set({
+                    stroke: "#00adb5"
+                });
+            }
+            else{//block 2개 이상
+                for (let i = this.visual_items.length - 1; i >= 0; i--)
+                this.visual_items[i].set({
+                    stroke: "#00adb5"
+                });
+            }
+            let funcButton = ["execute","disassemble","duplicate","destroy"];
+            for(let i=0;i<4;i++){
+                let size = {
+                    width:POPUP_WIDTH,
+                    height:POPUP_HEIGHT,
+                }
+                let position = {
+                    x: this.position.x+((POPUP_WIDTH+5)*i),
+                    y: this.position.y+(SYMBOL_HEIGHT+5),
+                }
+                let popup_btn = new MathApp.popupButton(position,size,funcButton[i]);
+            }
+            this.visual_items.forEach(item => {
+                MathApp.canvas.bringToFront(item);
+            });
+        }
+
+        MathApp.Block.prototype.moveTo = function(p) {
+            let tx = p.x - this.position.x;
+            let ty = p.y - this.position.y;
+
+            this.translate({x: tx, y: ty});
+        }
+
+        MathApp.Block.prototype.translate = function(v) {
+            this.position.x += v.x;
+            this.position.y += v.y;
+
+            this.visual_items.forEach(item => {
+                item.left += v.x;
+                item.top += v.y;
+            });
+        }
+        
+
+        MathApp.Block.prototype.destroy = function() {
+            if(this == MathApp.selected_block)
+            {
+                MathApp.selected_block = null;
+                this.onDeselected();
+            }
+
+            this.visual_items.forEach(item => {
+                MathApp.canvas.remove(item);
+            });
+            this.visual_items = [];
+            
+            let index = MathApp.blocks.indexOf(this);
+            if(index > -1)
+            {
+                MathApp.blocks.splice(index, 1);
+            }
+        }
+
+        //
+        MathApp.Symbol = function(position, size, name) {
+            MathApp.Block.call(this, position, size);
+            this.type = MathApp.block_types.SYMBOL;
+            this.name = name;
+
+            let block = this;
+
+            if (name in MathApp.symbol_paths) 
+            {
+                let path = "resources/" + MathApp.symbol_paths[name] + ".jpg";
+                fabric.Image.fromURL(path, function(img) {
+                    // (0) Background
+                    let background = new fabric.Rect({
+                        left: position.x - size.width/2,
+                        top: position.y - size.height/2,
+                        width: size.width,
+                        height: size.height,
+                        fill: "rgba(255,255,255,1)",
+                        stroke: "#222831",
+                        selectable: false
+                    });
+
+                    // (1) Image
+                    img.scaleToWidth(size.width);
+                    img.scaleToHeight(size.height);
+
+                    let img_w = img.getScaledWidth();
+                    let img_h = img.getScaledHeight();
+
+                    img.set({
+                        left: position.x - img_w/2,
+                        top: position.y - img_h/2,
+                        selectable: false
+                    });
+
+                    // (2) Boundary
+                    let boundary = new fabric.Rect({
+                        left: position.x - size.width/2,
+                        top: position.y - size.height/2,
+                        width: size.width,
+                        height: size.height,
+                        fill: "rgba(0,0,0,0)",
+                        stroke: "#222831",
+                        strokeWidth: 5,
+                        selectable: false
+                    });
+                    
+                    //
+                    MathApp.canvas.add(background);
+                    MathApp.canvas.add(img);
+                    MathApp.canvas.add(boundary);
+
+                    //
+                    block.visual_items.push(background);
+                    block.visual_items.push(img);
+                    block.visual_items.push(boundary);
+                });
+            }
+        }
+
+        MathApp.Symbol.prototype = Object.create(MathApp.Block.prototype);
+
+        //popup btn
+        MathApp.popupButton = function(position,size,label){
+            MathApp.Block.call(this,position,size);
+
+            this.type = MathApp.block_types.POPUP_BUTTON;
+            this.label = label;
+            let popupBtn = this;
+            //symbol code 재사용
+            let path = "resources/" + label + ".png";
+                fabric.Image.fromURL(path, function(img) {
+                    // (0) Background
+                    let background = new fabric.Rect({
+                        left: position.x - size.width/2,
+                        top: position.y - size.height/2,
+                        width: size.width,
+                        height: size.height,
+                        fill: "rgba(255,255,255,1)",
+                        stroke: "#222831",
+                        selectable: false
+                    });
+
+                    // (1) Image
+                    img.scaleToWidth(size.width);
+                    img.scaleToHeight(size.height);
+
+                    let img_w = img.getScaledWidth();
+                    let img_h = img.getScaledHeight();
+
+                    img.set({
+                        left: position.x - img_w/2,
+                        top: position.y - img_h/2,
+                        selectable: false
+                    });
+
+                    // (2) Boundary
+                    let boundary = new fabric.Rect({
+                        left: position.x - size.width/2,
+                        top: position.y - size.height/2,
+                        width: size.width,
+                        height: size.height,
+                        fill: "rgba(0,0,0,0)",
+                        stroke: "#222831",
+                        strokeWidth: 2,
+                        selectable: false
+                    });
+
+                    //
+                    MathApp.canvas.add(background);
+                    MathApp.canvas.add(img);
+                    MathApp.canvas.add(boundary);
+
+                    //
+                    popupBtn.visual_items.push(background);
+                    popupBtn.visual_items.push(img);
+                    popupBtn.visual_items.push(boundary);
+            });
+        }
+        MathApp.popupButton.prototype = Object.create(MathApp.Block.prototype);
+
+        //
+        $(document).ready(function() {
+            MathApp.initialize();
+        });
+        function functionbtnOnclick(name){
+            if( MathApp.selected_block != null )
+            {
+                MathApp.selected_block.onDeselected();
+                MathApp.selected_block = null;
+            }
+            let position={
+                x: nowXY.x+200,
+                y: nowXY.y+100,
+            }
+            MathApp.makeSeveralSymbols(name,position);
+        }
+
+        function draw(){
+            try {
+                // compile the expression once
+                const expression = fxValue;
+                const expr = math.compile(expression)
+          
+                // evaluate the expression repeatedly for different values of x
+                const xValues = math.range(-10, 10, 0.5).toArray()
+                const yValues = xValues.map(function (x) {
+                  return expr.evaluate({x: x})
+                })
+          
+                // render the plot using plotly
+                const trace1 = {
+                  x: xValues,
+                  y: yValues,
+                  type: 'scatter'
+                }
+                const data = [trace1]
+                Plotly.newPlot('plot', data);
+              }
+              catch (err) {
+                console.error(err)
+                alert(err)
+              }
+        }
+    </script>
+    
+</body>
+</html>
